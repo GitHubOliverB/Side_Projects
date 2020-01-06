@@ -17,7 +17,8 @@ class Product:
     def scrape_information(self):
             page = requests.get(self.url, headers=headers)
             soup = BeautifulSoup(page.content, 'html.parser')
-            self.title = soup.select('#productTitle')[0].get_text().strip()
+            title = soup.select('#productTitle')[0].get_text().strip()
+            self.title = str(title).replace(',', '')
             price = soup.select("#priceblock_ourprice")[0].get_text().strip()
             self.number_price = float(price[0:-2].replace(',', '.'))
 
