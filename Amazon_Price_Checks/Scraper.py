@@ -19,7 +19,14 @@ class Product:
             soup = BeautifulSoup(page.content, 'html.parser')
             title = soup.select('#productTitle')[0].get_text().strip()
             self.title = str(title).replace(',', '')
-            price = soup.select("#priceblock_ourprice")[0].get_text().strip()
+            try:
+                price = soup.select("#priceblock_ourprice")[0].get_text().strip()
+            except:
+                print("Seems like the item went on sale")
+            try:
+                price = soup.select("#priceblock_saleprice")[0].get_text().strip()
+            except:
+                print("Seems like the item went off sale")
             self.number_price = float(price[0:-2].replace(',', '.'))
 
 
