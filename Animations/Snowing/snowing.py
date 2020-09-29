@@ -26,19 +26,16 @@ class MyGame(arcade.Window):
         width, height = self.get_size()
         self.set_viewport(0, width, 0, height)
         self.shapes = arcade.ShapeElementList()
-
-        color_1 = (0, 10, 12)
-        color_2 = (215, 214, 255)
+        snow_color = (0, 10, 12)
+        background_color = (215, 214, 255)
         points = (0, 0), (SCREEN_WIDTH, 0), (SCREEN_WIDTH, SCREEN_HEIGHT), (0, SCREEN_HEIGHT)
-        colors = (color_1, color_1, color_2, color_2)
+        colors = (snow_color, snow_color, background_color, background_color)
         rectangle = arcade.create_rectangle_filled_with_colors(points, colors)
         self.shapes.append(rectangle)
-
         self.snowflake_list = None
 
     def start_snowfall(self):
         self.snowflake_list = []
-
         for _ in range(1000):
             snowflake = Snowflake()
             snowflake.x = random.randrange(SCREEN_WIDTH + random.randrange(-10, 10))
@@ -47,24 +44,19 @@ class MyGame(arcade.Window):
             snowflake.speed = np.random.poisson(40)
             snowflake.angle = random.uniform(math.pi, math.pi * 2)
             self.snowflake_list.append(snowflake)
-
         self.set_mouse_visible(False)
 
     def on_draw(self):
         arcade.start_render()
-
         self.shapes.draw()
         for snowflake in self.snowflake_list:
             arcade.draw_circle_filled(snowflake.x, snowflake.y, snowflake.size, arcade.color.WHITE)
 
     def on_update(self, delta_time):
-
         for snowflake in self.snowflake_list:
             snowflake.y -= snowflake.speed * delta_time
-
             if snowflake.y < 0:
                 snowflake.reset_pos()
-
             snowflake.x += snowflake.speed * math.cos(snowflake.angle) * delta_time
             snowflake.angle += delta_time
 
